@@ -14,6 +14,7 @@ attribute vec3 a_normal;
 
 varying vec2 v_texcoord;
 varying vec3 v_normal;
+varying vec3 v_FragPos;
 
 void main(){
     // Calculate vertex position in screen space
@@ -22,5 +23,7 @@ void main(){
     // Pass texture coordinate to fragment shader
     // Value will be automatically interpolated to fragments inside polygon faces
     v_texcoord = a_texcoord;
+
+    v_FragPos = vec3(u_Model * a_position);
     v_normal = a_normal;
 }

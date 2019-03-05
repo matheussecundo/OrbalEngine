@@ -45,7 +45,7 @@ void MainWidget::keyPressEvent(QKeyEvent *e){
     case Qt::Key_S:     m_Camera.moveBackward(); break;
     case Qt::Key_A:     m_Camera.strafeLeft(); break;
     case Qt::Key_D:     m_Camera.strafeRight(); break;
-    case Qt::Key_0:     m_Camera.position = {0,0,5}; m_Camera.viewDirection = {0,0,-1}; break;
+    case Qt::Key_0:     m_Camera.position = {0,1,10}; m_Camera.viewDirection = {0,0,-1}; break;
     default:;
     }
 }
@@ -60,9 +60,9 @@ void MainWidget::timerEvent(QTimerEvent *e){
 
 void MainWidget::initializeGL(){
     initializeOpenGLFunctions();
+    LOG << (const char*)glGetString(GL_VERSION);
 
     glClearColor(0, 0, 0, 1);
-
     initShaders();
 
     // Enable depth buffer
@@ -71,7 +71,10 @@ void MainWidget::initializeGL(){
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 
-    LOG << (const char*)glGetString(GL_VERSION);
+    //Light settings
+    shaderprogram.setUniformValue("u_ambientLight_strength", 0.15f);
+    shaderprogram.setUniformValue("u_lightPos", vec3(0,6,0));
+    shaderprogram.setUniformValue("u_lightColor", vec3(1,1,1));
 
     // Load stallTexture.png image
     texture = new Texture(Image(":textures/stallTexture.png").mirrored());
@@ -93,7 +96,7 @@ void MainWidget::initializeGL(){
 
     Camera::current = &m_Camera;
 
-    Camera::current->position = {0,0,5};
+    Camera::current->position = {0,1,10};
 
     entities[0]->position = {0,1,0};
     entities[1]->position = {4,1,0};
@@ -157,6 +160,9 @@ void MainWidget::paintGL(){
         m_Rendercount.timetoUpdate = false;
         entities[0]->transform.rotate(1,{0,1,0});
         //entity->transform.translate({0,0,0.01f});
+
+        //Light get position of camera
+        //shaderprogram.setUniformValue("u_lightPos", Camera::current->position);
     }
 
     if(m_Rendercount.timetoTick){

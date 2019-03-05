@@ -43,7 +43,7 @@ void SimpleRenderer::flush(){
         if(entity->m_Texture){
             entity->m_Texture->bind();
             // Use texture unit 0 which contains stallTexture.png
-            shaderprogram->setUniformValue("texture", 0);
+            shaderprogram->setUniformValue("u_texture", 0);
         }
 
         // Draw geometry using indices from VBO 1
