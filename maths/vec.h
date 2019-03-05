@@ -3,6 +3,6 @@
 #include <QVector4D>
 #include <math.h>
 
-typedef QVector4D Vec4;
-typedef QVector3D Vec3;
-typedef QVector2D Vec2;
+typedef QVector4D vec4;
+typedef QVector3D vec3;
+typedef QVector2D vec2;

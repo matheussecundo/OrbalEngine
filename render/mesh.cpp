@@ -7,9 +7,9 @@ Mesh::Mesh(const char* filepath){
     load_obj(filepath);
 }
 
-Mesh::Mesh(std::vector<Vec3> &vertices,
-           std::vector<Vec2> &uvs,
-           std::vector<Vec3> &normals,
+Mesh::Mesh(std::vector<vec3> &vertices,
+           std::vector<vec2> &uvs,
+           std::vector<vec3> &normals,
            std::vector<unsigned int> &vertices_indexlist,
            std::vector<unsigned int> &uvs_indexlist,
            std::vector<unsigned int> &normals_indexlist)
@@ -18,7 +18,7 @@ Mesh::Mesh(std::vector<Vec3> &vertices,
 }
 
 void Mesh::getVertexList(std::vector<Vertex> &vertexList){
-    vertexList = std::vector<Vertex>(m_Vertices_indexlist.size(), Vertex({0,0,0},{0,0},{0,0,0}));
+    vertexList = std::vector<Vertex>(m_Vertices_indexlist.size(), Vertex({0,0,0},{-1,-1},{0,0,0}));
     unsigned long i = 0;
     for(auto index : m_Vertices_indexlist){
         vertexList[i].vertice = m_Vertices[index];

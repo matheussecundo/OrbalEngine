@@ -11,6 +11,7 @@ varying vec3 v_normal;
 
 void main(){
 
-    gl_FragColor = vec4(abs(v_normal), 1.0f);//texture2D(texture, v_texcoord);
+    vec4 color = (v_texcoord.xy != vec2(-1,-1)) ? texture2D(texture, v_texcoord) : vec4(abs(v_normal), 1.0f);
+    gl_FragColor = color;
 }
 

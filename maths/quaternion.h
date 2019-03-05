@@ -3,4 +3,4 @@
 #include <QQuaternion>
 #include <math.h>
 
-typedef QQuaternion Quaternion;
+typedef QQuaternion quaternion;

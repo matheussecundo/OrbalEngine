@@ -40,6 +40,12 @@ void SimpleRenderer::flush(){
         shaderprogram->enableAttributeArray(a_normalLocation);
         shaderprogram->setAttributeBuffer(a_normalLocation, GL_FLOAT, offsetof(Vertex, normal), 3, sizeof(Vertex));
 
+        if(entity->m_Texture){
+            entity->m_Texture->bind();
+            // Use texture unit 0 which contains stallTexture.png
+            shaderprogram->setUniformValue("texture", 0);
+        }
+
         // Draw geometry using indices from VBO 1
         if(elements.size()){
             indexBuf.create();

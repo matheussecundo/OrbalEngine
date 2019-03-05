@@ -19,8 +19,8 @@ public:
     ShaderProgram *m_ShaderProgram;
     Texture *m_Texture;
 
-    Mat4 transform;
-    Vec3 &position;
+    mat4 transform;
+    vec3 &position;
 
 
 public:

@@ -7,16 +7,16 @@ Camera::Camera() : UP(0.0f, 1.0f, 0.0f), viewDirection(0.0f, 0.0f, -1.0f), movem
     projection.setToIdentity();
 }
 
-Mat4 Camera::worldToViewMatrix() const{
-    Mat4 result;
+mat4 Camera::worldToViewMatrix() const{
+    mat4 result;
     result.lookAt(position, position + viewDirection, UP);
     return result;
 }
 
 void Camera::rotate(float xAngle, float yAngle){
-    Quaternion quater;
+    quaternion quater;
     quater = quater.fromEulerAngles(0, xAngle, 0);
-    Mat4 rotate;
+    mat4 rotate;
     rotate.rotate(quater);
 
     viewDirection = rotate * viewDirection;
@@ -33,10 +33,10 @@ void Camera::moveBackward(){
     position += -movement_speed * viewDirection;
 }
 void Camera::strafeLeft(){
-    Vec3 strafeDirection = Vec3::crossProduct(viewDirection, UP);
+    vec3 strafeDirection = vec3::crossProduct(viewDirection, UP);
     position += -movement_speed * strafeDirection;
 }
 void Camera::strafeRight(){
-    Vec3 strafeDirection = Vec3::crossProduct(viewDirection, UP);
+    vec3 strafeDirection = vec3::crossProduct(viewDirection, UP);
     position += movement_speed * strafeDirection;
 }

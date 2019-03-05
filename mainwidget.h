@@ -22,7 +22,7 @@ class MainWidget : public QOpenGLWidget, protected OpenGLFunc{
 	RenderCount m_Rendercount;
 	SimpleRenderer m_Renderer;
 	
-    Vec2 m_MousePressPosition;
+    vec2 m_MousePressPosition;
 	
     ShaderProgram shaderprogram;
     
@@ -51,7 +51,6 @@ protected:
     void paintGL() override;
 
     void initShaders();
-    void initTextures();
 
 };
 

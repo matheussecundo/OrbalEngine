@@ -7,12 +7,12 @@
 #include "../maths/vec.h"
 
 struct Vertex{
-    Vec3 vertice;
-    Vec2 uv;
-    Vec3 normal;
+    vec3 vertice;
+    vec2 uv;
+    vec3 normal;
 
     Vertex() = default;
-    Vertex(const Vec3 &vertice, const Vec2 &uv, const Vec3 &normal) : vertice(vertice), uv(uv), normal(normal) {}
+    Vertex(const vec3 &vertice, const vec2 &uv, const vec3 &normal) : vertice(vertice), uv(uv), normal(normal) {}
 
     friend QDebug operator<<(QDebug dbg, const Vertex &vertex);
 };
@@ -21,9 +21,9 @@ struct Vertex{
 class Mesh{
 
     std::string o_name;
-    std::vector<Vec3> m_Vertices;
-    std::vector<Vec2> m_UVs;
-    std::vector<Vec3> m_Normals;
+    std::vector<vec3> m_Vertices;
+    std::vector<vec2> m_UVs;
+    std::vector<vec3> m_Normals;
     std::vector<unsigned int> m_Vertices_indexlist;
     std::vector<unsigned int> m_UVs_indexlist;
     std::vector<unsigned int> m_Normals_indexlist;
@@ -32,9 +32,9 @@ public:
 
     Mesh(const char* filepath);
 
-    Mesh(std::vector<Vec3> &vertices,
-    std::vector<Vec2> &uvs,
-    std::vector<Vec3> &normals,
+    Mesh(std::vector<vec3> &vertices,
+    std::vector<vec2> &uvs,
+    std::vector<vec3> &normals,
     std::vector<unsigned int> &vertices_indexlist,
     std::vector<unsigned int> &uvs_indexlist,
     std::vector<unsigned int> &normals_indexlist);

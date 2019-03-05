@@ -18,8 +18,8 @@ MainWidget::~MainWidget(){
 }
 
 void MainWidget::mouseMoveEvent(QMouseEvent *e) {
-    Vec2 newMousePosition = Vec2(e->localPos());
-    Vec2 mouseDelta = newMousePosition - m_MousePressPosition;
+    vec2 newMousePosition = vec2(e->localPos());
+    vec2 mouseDelta = newMousePosition - m_MousePressPosition;
 
     float xAngle = mouseDelta.x() * 180.0f/width();
     float yAngle = mouseDelta.y() * 90.0f/height();
@@ -30,7 +30,7 @@ void MainWidget::mouseMoveEvent(QMouseEvent *e) {
 }
 
 void MainWidget::mousePressEvent(QMouseEvent *e){
-    m_MousePressPosition = Vec2(e->localPos());
+    m_MousePressPosition = vec2(e->localPos());
 }
 
 void MainWidget::mouseReleaseEvent(QMouseEvent *e){
@@ -64,7 +64,6 @@ void MainWidget::initializeGL(){
     glClearColor(0, 0, 0, 1);
 
     initShaders();
-    //initTextures();
 
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
@@ -74,9 +73,19 @@ void MainWidget::initializeGL(){
 
     LOG << (const char*)glGetString(GL_VERSION);
 
+    // Load stallTexture.png image
+    texture = new Texture(Image(":textures/stallTexture.png").mirrored());
+    // Set nearest filtering mode for texture minification
+    texture->setMinificationFilter(Texture::Nearest);
+    // Set bilinear filtering mode for texture magnification
+    texture->setMagnificationFilter(Texture::Linear);
+    // Wrap texture coordinates by repeating
+    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
+    texture->setWrapMode(Texture::Repeat);
+
     entities.push_back(new Entity(new Mesh(":/models/piramide.obj"), &shaderprogram));
     entities.push_back(new Entity(new Mesh(":/models/cube.obj"), &shaderprogram));
-    entities.push_back(new Entity(new Mesh(":/models/stall.obj"), &shaderprogram));
+    entities.push_back(new Entity(new Mesh(":/models/stall.obj"), &shaderprogram, texture));
 
     timer.start(12, this);
 
@@ -109,21 +118,6 @@ void MainWidget::initShaders(){
         close();
 }
 
-void MainWidget::initTextures(){
-    // Load cube.png image
-    texture = new Texture(Image(":textures/stallTexture.png").mirrored());
-
-    // Set nearest filtering mode for texture minification
-    texture->setMinificationFilter(Texture::Nearest);
-
-    // Set bilinear filtering mode for texture magnification
-    texture->setMagnificationFilter(Texture::Linear);
-
-    // Wrap texture coordinates by repeating
-    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-    texture->setWrapMode(Texture::Repeat);
-}
-
 void MainWidget::resizeGL(int w, int h){
     float aspectRatio = float(w) / float(h ? h : 1);
     const float zNear = 2.0, zFar = 50.0, fov = 45.0;
@@ -136,15 +130,10 @@ void MainWidget::paintGL(){
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //texture->bind();
-
     // Set modelview-projection matrix -> Projection * View * Model
     shaderprogram.setUniformValue("u_Projection", Camera::current->projection);
     shaderprogram.setUniformValue("u_View", Camera::current->worldToViewMatrix());
 
-    // Use texture unit 0 which contains cube.png
-    //shaderprogram.setUniformValue("texture", 0);
-	
     for(auto entity : entities)
         m_Renderer.submit(entity);
 
