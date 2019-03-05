@@ -6,7 +6,6 @@ TEMPLATE = app
 CONFIG += STATIC
 
 SOURCES += main.cpp \
-    geometryengine.cpp \
     mainwidget.cpp \
     render/camera.cpp \
     render/entity.cpp \
@@ -26,7 +25,6 @@ HEADERS += \
     utils/time.h \
     utils/timer.h \
     utils/utils.h \
-    geometryengine.h \
     mainwidget.h \
     render/entity.h \
     render/renderer.h \

@@ -7,12 +7,11 @@
 #include "utils/utils.h"
 
 MainWidget::MainWidget(QWidget *parent)
-    : QOpenGLWidget(parent), geometries(nullptr), texture(nullptr) {}
+    : QOpenGLWidget(parent), texture(nullptr) {}
 
 MainWidget::~MainWidget(){
     makeCurrent();
     delete texture;
-    delete geometries;
     doneCurrent();
 }
 
@@ -71,10 +70,7 @@ void MainWidget::initializeGL(){
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 
-    LOG((const char*)glGetString(GL_VERSION));
-
-
-    //geometries = new GeometryEngine;
+    LOG << (const char*)glGetString(GL_VERSION);
 
     entities.push_back(new Entity(new Mesh(":/models/piramide.obj"), &shaderprogram));
     entities.push_back(new Entity(new Mesh(":/models/cube.obj"), &shaderprogram));
@@ -113,7 +109,7 @@ void MainWidget::initShaders(){
 
 void MainWidget::initTextures(){
     // Load cube.png image
-    texture = new Texture(Image(":textures/cube.png").mirrored());
+    texture = new Texture(Image(":textures/stallTexture.png").mirrored());
 
     // Set nearest filtering mode for texture minification
     texture->setMinificationFilter(Texture::Nearest);
@@ -146,9 +142,6 @@ void MainWidget::paintGL(){
 
     // Use texture unit 0 which contains cube.png
     //shaderprogram.setUniformValue("texture", 0);
-
-    // Draw cube geometry
-    //geometries->drawCubeGeometry(&program);
 	
     for(auto entity : entities)
         m_Renderer.submit(entity);

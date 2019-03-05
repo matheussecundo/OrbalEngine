@@ -85,7 +85,7 @@ bool Mesh::load_obj(const char* filepath){
             if (m_UVs.size() && m_Normals.size()) {
                 int matches = sscanf(s+2, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
                 if (matches != 9){
-                    LOG("File can't be read by our simple parser : ( Try exporting with other options : " << matches);
+                    LOG << "File can't be read by our simple parser : ( Try exporting with other options : " << matches;
                     return false;
                 }
                 m_Vertices_indexlist.push_back(vertexIndex[0]-1);
@@ -101,7 +101,7 @@ bool Mesh::load_obj(const char* filepath){
             }else if(m_UVs.size()){
                 int matches = sscanf(s+2, "%d/%d %d/%d %d/%d\n", &vertexIndex[0], &uvIndex[0], &vertexIndex[1], &uvIndex[1], &vertexIndex[2], &uvIndex[2]);
                 if (matches != 6){
-                    LOG("File can't be read by our simple parser : ( Try exporting with other options : " << matches);
+                    LOG << "File can't be read by our simple parser : ( Try exporting with other options : " << matches;
                     return false;
                 }
                 m_Vertices_indexlist.push_back(vertexIndex[0]-1);
@@ -114,7 +114,7 @@ bool Mesh::load_obj(const char* filepath){
             }else if (m_Normals.size()) {
                 int matches = sscanf(s+2, "%d//%d %d//%d %d//%d\n", &vertexIndex[0], &normalIndex[0], &vertexIndex[1], &normalIndex[1], &vertexIndex[2], &normalIndex[2]);
                 if (matches != 6){
-                    LOG("File can't be read by our simple parser : ( Try exporting with other options : " << matches);
+                    LOG << "File can't be read by our simple parser : ( Try exporting with other options : " << matches;
                     return false;
                 }
                 m_Vertices_indexlist.push_back(vertexIndex[0]-1);
@@ -127,7 +127,7 @@ bool Mesh::load_obj(const char* filepath){
             }else {
                 int matches = sscanf(s+2, "%d %d %d\n", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2]);
                 if (matches != 3){
-                    LOG("File can't be read by our simple parser : ( Try exporting with other options : " << matches);
+                    LOG << "File can't be read by our simple parser : ( Try exporting with other options : " << matches;
                     return false;
                 }
                 m_Vertices_indexlist.push_back(vertexIndex[0]-1);

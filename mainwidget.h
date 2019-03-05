@@ -1,6 +1,5 @@
 #pragma once
 
-#include "geometryengine.h"
 #include "render/entity.h"
 #include "render/simplerenderer.h"
 
@@ -15,8 +14,6 @@
 #include "utils/time.h"
 #include "render/camera.h"
 
-class GeometryEngine;
-
 class MainWidget : public QOpenGLWidget, protected OpenGLFunc{
     Q_OBJECT
 
@@ -29,10 +26,9 @@ class MainWidget : public QOpenGLWidget, protected OpenGLFunc{
 	
     ShaderProgram shaderprogram;
     
-	GeometryEngine *geometries;
-	Texture *texture;
-
     std::vector<Entity*> entities;
+
+    Texture *texture;
 
 public:
     explicit MainWidget(QWidget *parent = nullptr);

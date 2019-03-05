@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-#define LOG(x) qDebug() << x
+#define LOG qDebug()
 #define COLOR(r, g, b, a) a << 24 | b << 16 | g << 8 | r
 
 /*
