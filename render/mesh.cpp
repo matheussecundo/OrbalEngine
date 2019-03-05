@@ -32,7 +32,7 @@ void Mesh::getVertexList(std::vector<Vertex> &vertexList){
 }
 
 void Mesh::getVertexListwithElements(std::vector<Vertex> &vertexList, std::vector<unsigned short> &elements){
-    vertexList.resize(m_Vertices.size());
+    vertexList = std::vector<Vertex>(m_Vertices.size(), Vertex({0,0,0},{0,0},{0,0,0}));
     unsigned long i = 0;
     for(Vertex &vertex : vertexList){
         vertex.vertice = m_Vertices[i];

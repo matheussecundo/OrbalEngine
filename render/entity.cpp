@@ -5,7 +5,8 @@
 Entity::Entity(Mesh *mesh, ShaderProgram* shaderprogram, Texture* texture) : m_Mesh(mesh), m_ShaderProgram(shaderprogram), m_Texture(texture){
     initializeOpenGLFunctions();
 
-    mesh->getVertexListwithElements(m_VertexList, m_Elements);
+    //mesh->getVertexListwithElements(m_VertexList, m_Elements); //Incomplete function
+    mesh->getVertexList(m_VertexList);
 
     transform.setToIdentity();
 }

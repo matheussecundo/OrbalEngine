@@ -27,7 +27,7 @@ class MainWidget : public QOpenGLWidget, protected OpenGLFunc{
 	
     Vec2 m_MousePressPosition;
 	
-    ShaderProgram program;
+    ShaderProgram shaderprogram;
     
 	GeometryEngine *geometries;
 	Texture *texture;
@@ -44,6 +44,7 @@ protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
     void keyPressEvent(QKeyEvent *e) override;
+    void keyReleaseEvent(QKeyEvent *e) override;
     void timerEvent(QTimerEvent *e) override;
 
     //initialize

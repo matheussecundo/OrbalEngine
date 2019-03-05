@@ -6,14 +6,15 @@
 class Camera{
 
 public:
+    static Camera *current;
 
-    const Vec3 m_UP;
-    Vec3 m_Position;
-    Vec3 m_ViewDirection;
+    const Vec3 UP;
+    Vec3 Position;
+    Vec3 ViewDirection;
 
-    Mat4 m_Projection;
+    Mat4 Projection;
 
-    float m_Movement_Speed;
+    float Movement_Speed;
 
 public:
     Camera();

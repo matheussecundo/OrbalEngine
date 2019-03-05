@@ -5,6 +5,7 @@
 #define LOG(x) qDebug() << x
 #define COLOR(r, g, b, a) a << 24 | b << 16 | g << 8 | r
 
+/*
 inline static const std::string read_file(const char* filepath) {
     FILE* file = fopen(filepath, "rt");
     fseek(file, 0, SEEK_END);
@@ -17,3 +18,4 @@ inline static const std::string read_file(const char* filepath) {
     delete[] data;
     return result;
 }
+*/

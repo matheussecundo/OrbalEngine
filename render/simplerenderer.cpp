@@ -15,20 +15,17 @@ void SimpleRenderer::submit(const Entity *entity){
 
 void SimpleRenderer::flush(){
     for(auto entity : m_Entities){
-        std::vector<Vertex> vertexList = entity->m_VertexList;
+        const std::vector<Vertex> &vertexList = entity->m_VertexList;
         const std::vector<GLushort> &elements = entity->m_Elements;
         ShaderProgram* shaderprogram = entity->m_ShaderProgram;
-		
-        for(Vertex& vertex : vertexList){
-            vertex.vertice = entity->transform * vertex.vertice;
-            vertex.normal = entity->transform * vertex.normal;
-        }
 
         arrayBuf.create();
         arrayBuf.bind();
         arrayBuf.allocate(&vertexList[0], vertexList.size() * sizeof(Vertex));
 
         shaderprogram->bind();
+
+        shaderprogram->setUniformValue("u_Model", entity->transform);
 
         // Tell OpenGL programmable pipeline how to locate vertex position data
         int a_positionLocation = shaderprogram->attributeLocation("a_position");

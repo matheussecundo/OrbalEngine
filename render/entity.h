@@ -16,8 +16,8 @@ public:
     std::vector<GLushort> m_Elements;
 	
     Mesh *m_Mesh;
-	ShaderProgram* m_ShaderProgram;
-	Texture* m_Texture;
+    ShaderProgram *m_ShaderProgram;
+    Texture *m_Texture;
 
     Mat4 transform;
 
