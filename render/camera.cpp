@@ -3,13 +3,13 @@
 
 Camera *Camera::current = nullptr;
 
-Camera::Camera() : UP(0.0f, 1.0f, 0.0f), ViewDirection(0.0f, 0.0f, -1.0f), Movement_Speed(0.3f) {
-    Projection.setToIdentity();
+Camera::Camera() : UP(0.0f, 1.0f, 0.0f), viewDirection(0.0f, 0.0f, -1.0f), movement_speed(0.3f) {
+    projection.setToIdentity();
 }
 
-Mat4 Camera::getWorldToViewMatrix() const{
+Mat4 Camera::worldToViewMatrix() const{
     Mat4 result;
-    result.lookAt(Position, Position + ViewDirection, UP);
+    result.lookAt(position, position + viewDirection, UP);
     return result;
 }
 
@@ -19,24 +19,24 @@ void Camera::rotate(float xAngle, float yAngle){
     Mat4 rotate;
     rotate.rotate(quater);
 
-    ViewDirection = rotate * ViewDirection;
+    viewDirection = rotate * viewDirection;
 
-    ViewDirection.setY(ViewDirection.y() + yAngle*0.02f); //gambiarra, refazer depois
+    viewDirection.setY(viewDirection.y() + yAngle*0.02f); //gambiarra, refazer depois
 
-    ViewDirection.normalize();
+    viewDirection.normalize();
 }
 
 void Camera::moveFoward(){
-    Position += Movement_Speed * ViewDirection;
+    position += movement_speed * viewDirection;
 }
 void Camera::moveBackward(){
-    Position += -Movement_Speed * ViewDirection;
+    position += -movement_speed * viewDirection;
 }
 void Camera::strafeLeft(){
-    Vec3 strafeDirection = Vec3::crossProduct(ViewDirection, UP);
-    Position += -Movement_Speed * strafeDirection;
+    Vec3 strafeDirection = Vec3::crossProduct(viewDirection, UP);
+    position += -movement_speed * strafeDirection;
 }
 void Camera::strafeRight(){
-    Vec3 strafeDirection = Vec3::crossProduct(ViewDirection, UP);
-    Position += Movement_Speed * strafeDirection;
+    Vec3 strafeDirection = Vec3::crossProduct(viewDirection, UP);
+    position += movement_speed * strafeDirection;
 }

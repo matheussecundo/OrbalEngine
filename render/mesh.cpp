@@ -49,7 +49,7 @@ void Mesh::getVertexListwithElements(std::vector<Vertex> &vertexList, std::vecto
 bool Mesh::load_obj(const char* filepath){
     QFile file(filepath);
     if( !file.open(QIODevice::ReadOnly) ){
-        printf("Impossible to open the file !\n");
+        LOG << "Impossible to open the file !\n";
         return false;
     }
     char line[128];
@@ -150,6 +150,6 @@ bool Mesh::load_obj(const char* filepath){
 //Para usar o LOG no Vertex
 QDebug operator<<(QDebug dbg, const Vertex &vertex){
     QDebugStateSaver saver(dbg);
-    dbg.nospace() << "\nVertex( " << vertex.vertice << ", " << vertex.uv << ", " << vertex.normal << " )";
+    dbg.nospace() << "\n\033[0m\033[32mVertex(\033[0m " << vertex.vertice << ", " << vertex.uv << ", " << vertex.normal << " \033[0m\033[32m)\033[0m";
     return dbg;
 }

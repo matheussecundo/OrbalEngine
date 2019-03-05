@@ -2,12 +2,14 @@
 
 #include <QMouseEvent>
 
-#include <math.h>
+
 
 #include "utils/utils.h"
 
 MainWidget::MainWidget(QWidget *parent)
-    : QOpenGLWidget(parent), texture(nullptr) {}
+    : QOpenGLWidget(parent), texture(nullptr) {
+
+}
 
 MainWidget::~MainWidget(){
     makeCurrent();
@@ -36,20 +38,20 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e){
 }
 
 void MainWidget::keyPressEvent(QKeyEvent *e){
-    //LOG(e->text());
+    //LOG << e->text();
 
     switch (e->key()) {
     case Qt::Key_W:     m_Camera.moveFoward(); break;
     case Qt::Key_S:     m_Camera.moveBackward(); break;
     case Qt::Key_A:     m_Camera.strafeLeft(); break;
     case Qt::Key_D:     m_Camera.strafeRight(); break;
-    case Qt::Key_0:     m_Camera.Position = {0,0,5}; m_Camera.ViewDirection = {0,0,-1}; break;
+    case Qt::Key_0:     m_Camera.position = {0,0,5}; m_Camera.viewDirection = {0,0,-1}; break;
     default:;
     }
 }
 
 void MainWidget::keyReleaseEvent(QKeyEvent *e){
-    //LOG(e->text());
+    //LOG << e->text();
 }
 
 void MainWidget::timerEvent(QTimerEvent *e){
@@ -82,11 +84,11 @@ void MainWidget::initializeGL(){
 
     Camera::current = &m_Camera;
 
-    Camera::current->Position = {0,0,5};
+    Camera::current->position = {0,0,5};
 
-    entities[0]->setPosition(0,1,0);
-    entities[1]->setPosition(4,1,0);
-    entities[2]->setPosition(-8,1,0);
+    entities[0]->position = {0,1,0};
+    entities[1]->position = {4,1,0};
+    entities[2]->position = {-8,1,0};
 }
 
 void MainWidget::initShaders(){
@@ -126,8 +128,8 @@ void MainWidget::resizeGL(int w, int h){
     float aspectRatio = float(w) / float(h ? h : 1);
     const float zNear = 2.0, zFar = 50.0, fov = 45.0;
 
-    m_Camera.Projection.setToIdentity();
-    m_Camera.Projection.perspective(fov, aspectRatio, zNear, zFar);
+    m_Camera.projection.setToIdentity();
+    m_Camera.projection.perspective(fov, aspectRatio, zNear, zFar);
 }
 
 void MainWidget::paintGL(){
@@ -137,8 +139,8 @@ void MainWidget::paintGL(){
     //texture->bind();
 
     // Set modelview-projection matrix -> Projection * View * Model
-    shaderprogram.setUniformValue("u_Projection", Camera::current->Projection);
-    shaderprogram.setUniformValue("u_View", Camera::current->getWorldToViewMatrix());
+    shaderprogram.setUniformValue("u_Projection", Camera::current->projection);
+    shaderprogram.setUniformValue("u_View", Camera::current->worldToViewMatrix());
 
     // Use texture unit 0 which contains cube.png
     //shaderprogram.setUniformValue("texture", 0);

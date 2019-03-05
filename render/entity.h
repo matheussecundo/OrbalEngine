@@ -20,13 +20,12 @@ public:
     Texture *m_Texture;
 
     Mat4 transform;
+    Vec3 &position;
+
 
 public:
     Entity(Mesh *mesh, ShaderProgram *shaderprogram = nullptr, Texture *texture = nullptr);
     virtual ~Entity();
-
-    void setPosition(const Vec3& position);
-    void setPosition(float x, float y, float z);
 
 };
 

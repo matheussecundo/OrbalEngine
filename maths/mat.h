@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMatrix4x4>
+#include <math.h>
 
 typedef QMatrix4x4 Mat4;
 typedef QMatrix3x3 Mat3;

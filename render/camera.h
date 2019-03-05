@@ -9,17 +9,17 @@ public:
     static Camera *current;
 
     const Vec3 UP;
-    Vec3 Position;
-    Vec3 ViewDirection;
+    Vec3 position;
+    Vec3 viewDirection;
 
-    Mat4 Projection;
+    Mat4 projection;
 
-    float Movement_Speed;
+    float movement_speed;
 
 public:
     Camera();
 
-    Mat4 getWorldToViewMatrix() const;
+    Mat4 worldToViewMatrix() const;
 
     void rotate(float xAngle, float yAngle);
 
