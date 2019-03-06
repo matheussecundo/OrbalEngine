@@ -25,5 +25,5 @@ void main(){
     v_texcoord = a_texcoord;
 
     v_FragPos = vec3(u_Model * a_position);
-    v_normal = a_normal;
+    v_normal = normalize(a_normal);
 }

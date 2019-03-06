@@ -1,6 +1,6 @@
 #include "simplerenderer.h"
 
-SimpleRenderer::SimpleRenderer() : arrayBuf(Buffer::VertexBuffer), indexBuf(Buffer::IndexBuffer){
+SimpleRenderer::SimpleRenderer(){
 
 }
 
@@ -8,20 +8,18 @@ SimpleRenderer::~SimpleRenderer(){
 
 }
 
-void SimpleRenderer::submit(const Entity *entity){
+void SimpleRenderer::submit(Entity *entity){
     if(entity)
         m_Entities.push_back(entity);
 }
 
 void SimpleRenderer::flush(){
     for(auto entity : m_Entities){
-        const std::vector<Vertex> &vertexList = entity->m_VertexList;
-        const std::vector<GLushort> &elements = entity->m_Elements;
+        Buffer &arrayBuf = entity->arrayBuf;
+        Buffer &indexBuf = entity->indexBuf;
         ShaderProgram* shaderprogram = entity->m_ShaderProgram;
 
-        arrayBuf.create();
         arrayBuf.bind();
-        arrayBuf.allocate(&vertexList[0], vertexList.size() * sizeof(Vertex));
 
         shaderprogram->bind();
 
@@ -47,19 +45,14 @@ void SimpleRenderer::flush(){
         }
 
         // Draw geometry using indices from VBO 1
-        if(elements.size()){
-            indexBuf.create();
+        if(indexBuf.isCreated()){
             indexBuf.bind();
-            indexBuf.allocate(&elements[0], elements.size() * sizeof(GLushort));
-            glDrawElements(GL_TRIANGLES, elements.size(), GL_UNSIGNED_SHORT, nullptr);
+            glDrawElements(GL_TRIANGLES, indexBuf.size()/sizeof(GLushort), GL_UNSIGNED_SHORT, nullptr);
             indexBuf.release();
-            indexBuf.destroy();
         }else{
-            glDrawArrays(GL_TRIANGLES, 0, vertexList.size());
+            glDrawArrays(GL_TRIANGLES, 0, arrayBuf.size()/sizeof(Vertex));
         }
-
         arrayBuf.release();
-        arrayBuf.destroy();
 
     }
 	m_Entities.clear();

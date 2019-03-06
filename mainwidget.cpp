@@ -2,8 +2,6 @@
 
 #include <QMouseEvent>
 
-
-
 #include "utils/utils.h"
 
 MainWidget::MainWidget(QWidget *parent)
@@ -71,10 +69,6 @@ void MainWidget::initializeGL(){
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 
-    //Light settings
-    shaderprogram.setUniformValue("u_ambientLight_strength", 0.15f);
-    shaderprogram.setUniformValue("u_lightPos", vec3(0,6,0));
-    shaderprogram.setUniformValue("u_lightColor", vec3(1,1,1));
 
     // Load stallTexture.png image
     texture = new Texture(Image(":textures/stallTexture.png").mirrored());
@@ -86,13 +80,10 @@ void MainWidget::initializeGL(){
     // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
     texture->setWrapMode(Texture::Repeat);
 
+    //Load Entities
     entities.push_back(new Entity(new Mesh(":/models/piramide.obj"), &shaderprogram));
     entities.push_back(new Entity(new Mesh(":/models/cube.obj"), &shaderprogram));
     entities.push_back(new Entity(new Mesh(":/models/stall.obj"), &shaderprogram, texture));
-
-    timer.start(12, this);
-
-    m_Rendercount.start();
 
     Camera::current = &m_Camera;
 
@@ -101,6 +92,16 @@ void MainWidget::initializeGL(){
     entities[0]->position = {0,1,0};
     entities[1]->position = {4,1,0};
     entities[2]->position = {-8,1,0};
+
+    //Light settings
+    shaderprogram.setUniformValue("u_ambientLight_strength", 0.15f);
+    shaderprogram.setUniformValue("u_specularLight_strength", 1.0f);
+    shaderprogram.setUniformValue("u_viewPos", Camera::current->position);
+    shaderprogram.setUniformValue("u_lightPos", vec3(0,6,0));
+    shaderprogram.setUniformValue("u_lightColor", vec3(1,1,1));
+
+    timer.start(12, this);
+    m_Rendercount.start();
 }
 
 void MainWidget::initShaders(){
@@ -161,7 +162,10 @@ void MainWidget::paintGL(){
         entities[0]->transform.rotate(1,{0,1,0});
         //entity->transform.translate({0,0,0.01f});
 
-        //Light get position of camera
+        //transfer view position
+        shaderprogram.setUniformValue("u_viewPos", Camera::current->position);
+
+        //source Light move with the camera
         //shaderprogram.setUniformValue("u_lightPos", Camera::current->position);
     }
 
