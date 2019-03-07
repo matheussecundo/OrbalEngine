@@ -31,7 +31,7 @@ void Mesh::getVertexList(std::vector<Vertex> &vertexList){
     }
 }
 
-void Mesh::getVertexListwithElements(std::vector<Vertex> &vertexList, std::vector<unsigned short> &elements){
+void Mesh::getVertexList(std::vector<Vertex> &vertexList, std::vector<unsigned short> &elements){
     vertexList = std::vector<Vertex>(m_Vertices.size(), Vertex({0,0,0},{0,0},{0,0,0}));
     unsigned long i = 0;
     for(Vertex &vertex : vertexList){

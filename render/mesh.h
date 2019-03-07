@@ -42,8 +42,7 @@ public:
 public:
 
     void getVertexList(std::vector<Vertex> &vertexList);
-
-    void getVertexListwithElements(std::vector<Vertex> &vertexList, std::vector<unsigned short> &elements);
+    void getVertexList(std::vector<Vertex> &vertexList, std::vector<unsigned short> &elements);
 
     inline const char* getMeshName() const { return o_name.c_str(); }
     inline unsigned long getN_Vertices() const { return m_Vertices.size(); }

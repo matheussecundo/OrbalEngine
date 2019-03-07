@@ -3,7 +3,7 @@
 #include "../utils/utils.h"
 
 Entity::Entity(Mesh *mesh, ShaderProgram *shaderprogram, Texture *texture)
-    : m_Mesh(mesh), m_ShaderProgram(shaderprogram), m_Texture(texture), position(*(vec3*)&transform.data()[12]){
+    : arrayBuf(Buffer::VertexBuffer), indexBuf(Buffer::IndexBuffer), m_Mesh(mesh), m_ShaderProgram(shaderprogram), m_Texture(texture), position(*(vec3*)&transform.data()[12]){
 
     initializeOpenGLFunctions();
 

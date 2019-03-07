@@ -142,6 +142,9 @@ void MainWidget::paintGL(){
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    //transfer view position to light
+    shaderprogram.setUniformValue("u_viewPos", Camera::current->position);
+
     // Set modelview-projection matrix -> Projection * View * Model
     shaderprogram.setUniformValue("u_Projection", Camera::current->projection);
     shaderprogram.setUniformValue("u_View", Camera::current->worldToViewMatrix());
@@ -169,11 +172,6 @@ void MainWidget::paintGL(){
         entities[0]->transform.rotate(1,{0,1,0});
         //entity->transform.translate({0,0,0.01f});
 
-        //transfer view position
-        shaderprogram.setUniformValue("u_viewPos", Camera::current->position);
-
-        //source Light move with the camera
-        //shaderprogram.setUniformValue("u_lightPos", Camera::current->position);
     }
 
     if(m_Rendercount.timetoTick){
