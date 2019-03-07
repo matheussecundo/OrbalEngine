@@ -28,8 +28,6 @@ class MainWidget : public QOpenGLWidget, protected OpenGLFunc{
     
     std::vector<Entity*> entities;
 
-    Texture *texture;
-
 public:
     explicit MainWidget(QWidget *parent = nullptr);
     ~MainWidget();

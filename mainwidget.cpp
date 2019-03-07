@@ -5,13 +5,12 @@
 #include "utils/utils.h"
 
 MainWidget::MainWidget(QWidget *parent)
-    : QOpenGLWidget(parent), texture(nullptr) {
+    : QOpenGLWidget(parent) {
 
 }
 
 MainWidget::~MainWidget(){
     makeCurrent();
-    delete texture;
     doneCurrent();
 }
 
@@ -69,21 +68,28 @@ void MainWidget::initializeGL(){
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 
-
+    Texture *texture_stall;
     // Load stallTexture.png image
-    texture = new Texture(Image(":textures/stallTexture.png").mirrored());
+    texture_stall = new Texture(Image(":textures/stallTexture.png").mirrored());
     // Set nearest filtering mode for texture minification
-    texture->setMinificationFilter(Texture::Nearest);
+    texture_stall->setMinificationFilter(Texture::Nearest);
     // Set bilinear filtering mode for texture magnification
-    texture->setMagnificationFilter(Texture::Linear);
+    texture_stall->setMagnificationFilter(Texture::Linear);
     // Wrap texture coordinates by repeating
     // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-    texture->setWrapMode(Texture::Repeat);
+    texture_stall->setWrapMode(Texture::Repeat);
+
+    Texture *texture_Plane;
+    texture_Plane = new Texture(Image(":textures/Plane.png").mirrored());
+    texture_Plane->setMinificationFilter(Texture::Nearest);
+    texture_Plane->setMagnificationFilter(Texture::Linear);
+    texture_Plane->setWrapMode(Texture::Repeat);
 
     //Load Entities
     entities.push_back(new Entity(new Mesh(":/models/piramide.obj"), &shaderprogram));
     entities.push_back(new Entity(new Mesh(":/models/cube.obj"), &shaderprogram));
-    entities.push_back(new Entity(new Mesh(":/models/stall.obj"), &shaderprogram, texture));
+    entities.push_back(new Entity(new Mesh(":/models/stall.obj"), &shaderprogram, texture_stall));
+    entities.push_back(new Entity(new Mesh(":/models/Plane.obj"), &shaderprogram, texture_Plane));
 
     Camera::current = &m_Camera;
 
@@ -91,7 +97,9 @@ void MainWidget::initializeGL(){
 
     entities[0]->position = {0,1,0};
     entities[1]->position = {4,1,0};
-    entities[2]->position = {-8,1,0};
+    entities[2]->position = {-8,-1,0};
+    entities[3]->position = {0,-1,0};
+    entities[3]->transform.scale(2);
 
     //Light settings
     shaderprogram.setUniformValue("u_ambientLight_strength", 0.15f);
@@ -124,7 +132,7 @@ void MainWidget::initShaders(){
 
 void MainWidget::resizeGL(int w, int h){
     float aspectRatio = float(w) / float(h ? h : 1);
-    const float zNear = 2.0, zFar = 50.0, fov = 45.0;
+    const float zNear = 1.0, zFar = 100.0, fov = 45.0;
 
     m_Camera.projection.setToIdentity();
     m_Camera.projection.perspective(fov, aspectRatio, zNear, zFar);
@@ -143,7 +151,6 @@ void MainWidget::paintGL(){
 
     m_Renderer.flush();
 	
-    //As linhas vão parar no centro do stall porque u_Model no shader mantem o transform do stall
     glBegin(GL_LINES);
         glVertex3f(0,0,0);
         glVertex3f(2,0,0);
