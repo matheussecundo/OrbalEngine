@@ -3,17 +3,31 @@
 #include <QFile>
 
 
-Mesh::Mesh(const char* filepath){
+Mesh::Mesh(const char *filepath){
     load_obj(filepath);
 }
 
-Mesh::Mesh(std::vector<vec3> &vertices,
-           std::vector<vec2> &uvs,
-           std::vector<vec3> &normals,
-           std::vector<unsigned int> &vertices_indexlist,
-           std::vector<unsigned int> &uvs_indexlist,
-           std::vector<unsigned int> &normals_indexlist)
+Mesh::Mesh(const std::vector<vec3> &vertices,
+           const std::vector<unsigned int> &vertices_indexlist,
+           const std::vector<vec2> &uvs,
+           const std::vector<unsigned int> &uvs_indexlist,
+           const std::vector<vec3> &normals,
+           const std::vector<unsigned int> &normals_indexlist)
     : m_Vertices(vertices), m_UVs(uvs), m_Normals(normals), m_Vertices_indexlist(vertices_indexlist), m_UVs_indexlist(uvs_indexlist), m_Normals_indexlist(normals_indexlist){
+
+}
+
+Mesh::Mesh(const std::vector<vec3> &vertices,
+           const std::vector<unsigned int> &vertices_indexlist)
+    : m_Vertices(vertices), m_Vertices_indexlist(vertices_indexlist){
+
+}
+
+Mesh::Mesh(const std::vector<vec3> &vertices,
+           const std::vector<unsigned int> &vertices_indexlist,
+           const std::vector<vec3> &normals,
+           const std::vector<unsigned int> &normals_indexlist)
+    : m_Vertices(vertices), m_Normals(normals), m_Vertices_indexlist(vertices_indexlist), m_Normals_indexlist(normals_indexlist){
 
 }
 
@@ -46,7 +60,7 @@ void Mesh::getVertexList(std::vector<Vertex> &vertexList, std::vector<unsigned s
     //So funciona os vertices
 }
 
-bool Mesh::load_obj(const char* filepath){
+bool Mesh::load_obj(const char *filepath){
     QFile file(filepath);
     if( !file.open(QIODevice::ReadOnly) ){
         LOG << "Impossible to open the file !\n";
@@ -57,7 +71,7 @@ bool Mesh::load_obj(const char* filepath){
         if (char* s = strstr(line, "o ")){
             o_name = std::string(s+2);
         }else if (char* s = strstr(line, "v ")){
-            char xc[10],yc[10],zc[10];
+            char xc[20],yc[20],zc[20];
             sscanf(s+2, "%s %s %s", xc, yc, zc);
             float x,y,z;
             x = QString(xc).toFloat();
@@ -65,14 +79,14 @@ bool Mesh::load_obj(const char* filepath){
             z = QString(zc).toFloat();
             m_Vertices.push_back({x,y,z});
         }else if (char* s = strstr(line, "vt ")) {
-            char xc[10],yc[10];
+            char xc[20],yc[20];
             sscanf(s+3, "%s %s", xc, yc);
             float x,y;
             x = QString(xc).toFloat();
             y = QString(yc).toFloat();
             m_UVs.push_back({x,y});
         }else if (char* s = strstr(line, "vn ")) {
-            char xc[10],yc[10],zc[10];
+            char xc[20],yc[20],zc[20];
             sscanf(s+3, "%s %s %s", xc, yc, zc);
             float x,y,z;
             x = QString(xc).toFloat();

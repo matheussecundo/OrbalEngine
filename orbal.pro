@@ -27,7 +27,6 @@ HEADERS += \
     utils/utils.h \
     mainwidget.h \
     render/entity.h \
-    render/renderer.h \
     render/simplerenderer.h \
     render/mesh.h
 

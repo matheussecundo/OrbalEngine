@@ -30,14 +30,22 @@ class Mesh{
 
 public:
 
-    Mesh(const char* filepath);
+    Mesh(const char *filepath);
 
-    Mesh(std::vector<vec3> &vertices,
-    std::vector<vec2> &uvs,
-    std::vector<vec3> &normals,
-    std::vector<unsigned int> &vertices_indexlist,
-    std::vector<unsigned int> &uvs_indexlist,
-    std::vector<unsigned int> &normals_indexlist);
+    Mesh(const std::vector<vec3> &vertices,
+         const std::vector<unsigned int> &vertices_indexlist,
+         const std::vector<vec2> &uvs,
+         const std::vector<unsigned int> &uvs_indexlist,
+         const std::vector<vec3> &normals,
+         const std::vector<unsigned int> &normals_indexlist);
+
+    Mesh(const std::vector<vec3> &vertices,
+         const std::vector<unsigned int> &vertices_indexlist);
+
+    Mesh(const std::vector<vec3> &vertices,
+         const std::vector<unsigned int> &vertices_indexlist,
+         const std::vector<vec3> &normals,
+         const std::vector<unsigned int> &normals_indexlist);
 
 public:
 

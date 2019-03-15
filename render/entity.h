@@ -13,9 +13,6 @@
 class Entity : protected OpenGLFunc{
 
 public:
-    std::vector<Vertex> m_VertexList;
-    std::vector<GLushort> m_Elements;
-
     Buffer arrayBuf;
     Buffer indexBuf;
 	
@@ -27,7 +24,7 @@ public:
     vec3 &position;
 
 public:
-    Entity(Mesh *mesh, ShaderProgram *shaderprogram = nullptr, Texture *texture = nullptr);
+    Entity(Mesh *mesh, ShaderProgram *shaderprogram, Texture *texture = nullptr);
     virtual ~Entity();
 
 };

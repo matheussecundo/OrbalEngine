@@ -36,7 +36,6 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e){
 
 void MainWidget::keyPressEvent(QKeyEvent *e){
     //LOG << e->text();
-
     switch (e->key()) {
     case Qt::Key_W:     m_Camera.moveFoward(); break;
     case Qt::Key_S:     m_Camera.moveBackward(); break;
@@ -98,7 +97,7 @@ void MainWidget::initializeGL(){
     entities[0]->position = {0,1,0};
     entities[1]->position = {4,1,0};
     entities[2]->position = {-8,-1,0};
-    entities[3]->position = {0,-1,0};
+    entities[3]->position = {0,-2,0};
     entities[3]->transform.scale(2);
 
     //Light settings
@@ -149,8 +148,8 @@ void MainWidget::paintGL(){
     shaderprogram.setUniformValue("u_Projection", Camera::current->projection);
     shaderprogram.setUniformValue("u_View", Camera::current->worldToViewMatrix());
 
-    for(auto entity : entities)
-        m_Renderer.submit(entity);
+    //for(auto entity : entities) m_Renderer.submit(entity);
+    m_Renderer.submit(entities); //submit entire list
 
     m_Renderer.flush();
 	
