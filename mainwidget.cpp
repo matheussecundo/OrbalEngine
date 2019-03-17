@@ -122,12 +122,14 @@ void MainWidget::initializeGL(){
             return;
         }
         auto rooms = QString(file.readAll().data()).split("\n");
+        int nrooms = rooms[0].toInt();
+        LOG << nrooms;
         rooms.removeFirst();
         float x = 0;
-        for(auto &room : rooms){
-            auto objs = room.split(" ");
+        for(int n = 0; n < nrooms; n++){
+            auto objs = rooms[n].split(" ");
+            LOG << objs;
             objs.removeFirst();
-
             //Load Entities
             entities.push_back(new Entity(meshs[0], &shaderprogram));
             entities.back()->m_Texture = textures[0];
@@ -137,7 +139,6 @@ void MainWidget::initializeGL(){
             entities.back()->transform.scale(3);
             entities.back()->position = {x,0,0};
 
-            LOG << objs;
             bool matrix_position[6][6] = {{},{},{},{},{}};
 
             for(unsigned k = 0; k < objs.size(); k += 3){
