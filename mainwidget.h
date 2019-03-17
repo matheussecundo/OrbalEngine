@@ -1,4 +1,5 @@
 #pragma once
+#include <QApplication>
 
 #include "render/entity.h"
 #include "render/simplerenderer.h"
@@ -6,7 +7,6 @@
 #include <QOpenGLWidget>
 #include "opengl/openglfunc.h"
 #include "maths/mat.h"
-#include "maths/quaternion.h"
 #include "maths/vec.h"
 #include "utils/timer.h"
 #include "opengl/shaderprogram.h"

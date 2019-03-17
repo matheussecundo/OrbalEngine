@@ -3,6 +3,6 @@
         <file>models/cube.obj</file>
         <file>models/piramide.obj</file>
         <file>models/stall.obj</file>
-        <file>models/Plane.obj</file>
+        <file>models/room.obj</file>
     </qresource>
 </RCC>

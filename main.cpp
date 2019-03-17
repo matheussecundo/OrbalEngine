@@ -6,6 +6,8 @@
 #include "mainwidget.h"
 #endif
 
+#include "utils/utils.h"
+
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);
 
@@ -16,6 +18,9 @@ int main(int argc, char *argv[]){
 
     app.setApplicationName("Orbal Engine");
     app.setApplicationVersion("0.1");
+
+    LOG << "Executable path:" << QApplication::arguments()[0];
+    LOG << "Inputs:" << QApplication::arguments();
 
 #ifndef QT_NO_OPENGL
     MainWidget widget;
@@ -29,4 +34,3 @@ int main(int argc, char *argv[]){
     return app.exec();
 }
 
-//http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
