@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>textures/stallTexture.png</file>
         <file>textures/room.png</file>
+        <file>textures/chair.png</file>
+        <file>textures/table.png</file>
     </qresource>
 </RCC>

@@ -4,5 +4,7 @@
         <file>models/piramide.obj</file>
         <file>models/stall.obj</file>
         <file>models/room.obj</file>
+        <file>models/chair.obj</file>
+        <file>models/table.obj</file>
     </qresource>
 </RCC>

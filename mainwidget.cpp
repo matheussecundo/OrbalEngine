@@ -70,8 +70,8 @@ double d_normal() {
             //LOG << x <<" ";
         }
     }
-    if (x < 2 && x > -2){
-        return x/2; // normalize
+    if (x < 4 && x > -4){
+        return x/4; // normalize
     }
     else{
         return d_normal();
@@ -103,8 +103,18 @@ void MainWidget::initializeGL(){
     timer.start(12, this);
     m_Rendercount.start();
 
-    Mesh *meshs[] = {new Mesh(":/models/room.obj")};
-    Texture *textures[] = {new Texture(Image(":textures/room.png").mirrored())};
+    Mesh *meshs[] =
+    {
+        new Mesh(":/models/room.obj"),
+        new Mesh(":/models/chair.obj"),
+        new Mesh(":/models/table.obj"),
+    };
+    Texture *textures[] =
+    {
+        new Texture(Image(":textures/room.png").mirrored()),
+        new Texture(Image(":textures/chair.png").mirrored()),
+        new Texture(Image(":textures/table.png").mirrored()),
+    };
 
     if(QApplication::arguments().size() > 1){
         QFile file(QApplication::arguments()[1]);
@@ -114,30 +124,49 @@ void MainWidget::initializeGL(){
         auto rooms = QString(file.readAll().data()).split("\n");
         rooms.removeFirst();
         float x = 0;
-        unsigned i = 0;
         for(auto &room : rooms){
             auto objs = room.split(" ");
             objs.removeFirst();
+
+            //Load Entities
+            entities.push_back(new Entity(meshs[0], &shaderprogram));
+            entities.back()->m_Texture = textures[0];
+            entities.back()->m_Texture->setMinificationFilter(Texture::Nearest);
+            entities.back()->m_Texture->setMagnificationFilter(Texture::Linear);
+            entities.back()->m_Texture->setWrapMode(Texture::Repeat);
+            entities.back()->transform.scale(3);
+            entities.back()->position = {x,0,0};
+
             LOG << objs;
+            bool matrix_position[6][6] = {{},{},{},{},{}};
 
             for(unsigned k = 0; k < objs.size(); k += 3){
                 int media = objs[k + 1].toInt();
                 int desvio = objs[k + 2].toInt();
+                int tendencia = round(media + d_normal()*desvio);
+                LOG << "Tendencia" << k/3 + 1 << ":"<< tendencia;
+                for(int i = 0; i < tendencia; i++){
+                    entities.push_back(new Entity(meshs[k/3 + 1], &shaderprogram));
+                    entities.back()->m_Texture = textures[k/3 + 1];
+                    entities.back()->m_Texture->setMinificationFilter(Texture::Nearest);
+                    entities.back()->m_Texture->setMagnificationFilter(Texture::Linear);
+                    entities.back()->m_Texture->setWrapMode(Texture::Repeat);
+                    if(k/3 == 1)
+                        entities.back()->transform.scale(0.5f);
 
-                LOG << round(media + d_normal()*desvio);
+                    unsigned xposition = rand()%6;
+                    unsigned yposition = rand()%6;
+                    while (matrix_position[xposition][yposition]) {
+                        xposition = rand()%6;
+                        yposition = rand()%6;
+                    }
+                    matrix_position[xposition][yposition] = true;
+
+                    entities.back()->position = {x -12 + xposition*4.6f + (float)d_normal(),0, -12 + yposition*4.6f + (float)d_normal()};
+                }
+
             }
-
-            //Load Entities
-            entities.push_back(new Entity(meshs[0], &shaderprogram));
-            entities[i]->m_Texture = textures[0];
-            entities[i]->m_Texture->setMinificationFilter(Texture::Nearest);
-            entities[i]->m_Texture->setMagnificationFilter(Texture::Linear);
-            entities[i]->m_Texture->setWrapMode(Texture::Repeat);
-
-            entities[i]->transform.scale(3);
-            entities[i]->position = {x,0,0};
             x += 30;
-            i++;
         }
     }
 
@@ -180,21 +209,9 @@ void MainWidget::paintGL(){
     shaderprogram.setUniformValue("u_Projection", Camera::current->projection);
     shaderprogram.setUniformValue("u_View", Camera::current->worldToViewMatrix());
 
-    //for(auto entity : entities) m_Renderer.submit(entity);
     m_Renderer.submit(entities); //submit entire list
     m_Renderer.flush();
 	
-    glBegin(GL_LINES);
-        glVertex3f(0,0,0);
-        glVertex3f(2,0,0);
-
-        glVertex3f(0,0,0);
-        glVertex3f(0,4,0);
-
-        glVertex3f(0,0,0);
-        glVertex3f(0,0,3);
-    glEnd();
-
     m_Rendercount.count();
 
     if(m_Rendercount.timetoUpdate){
