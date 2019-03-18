@@ -161,7 +161,7 @@ void MainWidget::initializeGL(){
                     }
                     matrix_position[xposition][yposition] = true;
 
-                    entities.back()->position = {x -12.0f + xposition*4.6f + (float)d_normal(), 0, -12.0f*((nobjetos + 36)/36) + yposition*4.6f + (float)d_normal()};
+                    entities.back()->position = {x -11.5f + xposition*4.6f + (float)d_normal(), 0, -12.0f*((nobjetos + 36)/36) + yposition*4.6f + (float)d_normal()};
                 }
 
             }
