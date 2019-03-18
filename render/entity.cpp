@@ -4,7 +4,6 @@
 
 Entity::Entity(Mesh *mesh, ShaderProgram *shaderprogram, Texture *texture)
     : arrayBuf(Buffer::VertexBuffer), indexBuf(Buffer::IndexBuffer), m_Mesh(mesh), m_ShaderProgram(shaderprogram), m_Texture(texture), position(*(vec3*)&transform.data()[12]){
-    initializeOpenGLFunctions();
 
     std::vector<Vertex> vertexList;
     std::vector<GLushort> elements;

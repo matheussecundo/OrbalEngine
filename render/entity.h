@@ -10,7 +10,7 @@
 
 #include "mesh.h"
 
-class Entity : protected OpenGLFunc{
+class Entity{
 
 public:
     Buffer arrayBuf;

@@ -33,10 +33,10 @@ void Camera::moveBackward(){
     position += -movement_speed * viewDirection;
 }
 void Camera::strafeLeft(){
-    vec3 strafeDirection = vec3::crossProduct(viewDirection, UP);
+    vec3 strafeDirection = vec3::crossProduct(viewDirection, UP).normalized();
     position += -movement_speed * strafeDirection;
 }
 void Camera::strafeRight(){
-    vec3 strafeDirection = vec3::crossProduct(viewDirection, UP);
+    vec3 strafeDirection = vec3::crossProduct(viewDirection, UP).normalized();
     position += movement_speed * strafeDirection;
 }

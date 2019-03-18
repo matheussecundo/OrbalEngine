@@ -131,42 +131,49 @@ void MainWidget::initializeGL(){
             LOG << objs;
             objs.removeFirst();
             //Load Entities
+
+            bool matrix_position[6][100]{};
+            unsigned nobjetos = 0;
+            std::vector<unsigned> tendencia_objs;
+            for(unsigned k = 0; k < objs.size(); k += 3){
+                int media = objs[k + 1].toInt();
+                int desvio = objs[k + 2].toInt();
+                unsigned tendencia = round(media + d_normal()*desvio);
+                tendencia_objs.push_back(tendencia);
+                nobjetos += tendencia;
+            }
+            LOG << "N Objetos:" << tendencia_objs;
+            for(unsigned k = 0; k < tendencia_objs.size(); k++){
+                for(unsigned i = 0; i < tendencia_objs[k]; i++){
+                    entities.push_back(new Entity(meshs[k + 1], &shaderprogram));
+                    entities.back()->m_Texture = textures[k + 1];
+                    entities.back()->m_Texture->setMinificationFilter(Texture::Nearest);
+                    entities.back()->m_Texture->setMagnificationFilter(Texture::Linear);
+                    entities.back()->m_Texture->setWrapMode(Texture::Repeat);
+                    if(k == 1)
+                        entities.back()->transform.scale(0.5f);
+
+                    unsigned xposition = rand()%6;
+                    unsigned yposition = rand()%(6 * ((nobjetos + 36)/36));
+                    while (matrix_position[xposition][yposition]) {
+                        xposition = rand()%6;
+                        yposition = rand()%(6 * ((nobjetos + 36)/36));
+                    }
+                    matrix_position[xposition][yposition] = true;
+
+                    entities.back()->position = {x -12.0f + xposition*4.6f + (float)d_normal(), 0, -12.0f*((nobjetos + 36)/36) + yposition*4.6f + (float)d_normal()};
+                }
+
+            }
+
             entities.push_back(new Entity(meshs[0], &shaderprogram));
             entities.back()->m_Texture = textures[0];
             entities.back()->m_Texture->setMinificationFilter(Texture::Nearest);
             entities.back()->m_Texture->setMagnificationFilter(Texture::Linear);
             entities.back()->m_Texture->setWrapMode(Texture::Repeat);
-            entities.back()->transform.scale(3);
+            entities.back()->transform.scale({3.0f, 3.0f, 3.0f * ((nobjetos + 36)/36)});
             entities.back()->position = {x,0,0};
 
-            bool matrix_position[6][6] = {{},{},{},{},{}};
-
-            for(unsigned k = 0; k < objs.size(); k += 3){
-                int media = objs[k + 1].toInt();
-                int desvio = objs[k + 2].toInt();
-                int tendencia = round(media + d_normal()*desvio);
-                LOG << "Tendencia" << k/3 + 1 << ":"<< tendencia;
-                for(int i = 0; i < tendencia; i++){
-                    entities.push_back(new Entity(meshs[k/3 + 1], &shaderprogram));
-                    entities.back()->m_Texture = textures[k/3 + 1];
-                    entities.back()->m_Texture->setMinificationFilter(Texture::Nearest);
-                    entities.back()->m_Texture->setMagnificationFilter(Texture::Linear);
-                    entities.back()->m_Texture->setWrapMode(Texture::Repeat);
-                    if(k/3 == 1)
-                        entities.back()->transform.scale(0.5f);
-
-                    unsigned xposition = rand()%6;
-                    unsigned yposition = rand()%6;
-                    while (matrix_position[xposition][yposition]) {
-                        xposition = rand()%6;
-                        yposition = rand()%6;
-                    }
-                    matrix_position[xposition][yposition] = true;
-
-                    entities.back()->position = {x -12 + xposition*4.6f + (float)d_normal(),0, -12 + yposition*4.6f + (float)d_normal()};
-                }
-
-            }
             x += 30;
         }
     }

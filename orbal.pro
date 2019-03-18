@@ -39,6 +39,10 @@ RESOURCES += \
 target.path = $$PWD
 INSTALLS += target
 
+DESTDIR= $$PWD/bin #Target file directory
+OBJECTS_DIR=generated_files #Intermediate object files directory
+MOC_DIR=generated_files #Intermediate moc files directory
+
 DISTFILES +=
 
 #CONFIG += c++11
