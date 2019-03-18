@@ -32,7 +32,7 @@ Mesh::Mesh(const std::vector<vec3> &vertices,
 }
 
 void Mesh::getVertexList(std::vector<Vertex> &vertexList){
-    vertexList = std::vector<Vertex>(m_Vertices_indexlist.size(), Vertex({0,0,0},{-1,-1},{0,0,0}));
+    vertexList = std::vector<Vertex>(m_Vertices_indexlist.size(), Vertex({0,0,0},{-1,-1},{1,1,1}));
     unsigned long i = 0;
     for(auto index : m_Vertices_indexlist){
         vertexList[i].vertice = m_Vertices[index];

@@ -37,7 +37,7 @@ void main(){
     vec4 objectColor = texture2D(u_texture, v_texcoord);
 
     //If have texture, light take effect, if not, pure normal of vertex color
-    vec4 Color = (v_texcoord.xy != vec2(-1,-1)) ? vec4(ambientLight + diffuseLight + specular, 1.0) * objectColor : vec4(abs(v_normal), 1.0);
+    vec4 Color = (v_texcoord.xy != vec2(-1,-1)) ? vec4(ambientLight + diffuseLight + specular, 1.0) * objectColor : vec4(ambientLight + diffuseLight + specular, 1.0) * vec4(0.5,0.5,0.5,1.0);
 
     gl_FragColor = Color;
 }

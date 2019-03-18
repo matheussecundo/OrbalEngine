@@ -7,6 +7,11 @@
 MainWidget::MainWidget(QWidget *parent)
     : QOpenGLWidget(parent) {
 
+    m_Keys[Qt::Key_W] = 0;
+    m_Keys[Qt::Key_S] = 0;
+    m_Keys[Qt::Key_A] = 0;
+    m_Keys[Qt::Key_D] = 0;
+    m_Keys[Qt::Key_0] = 0;
 }
 
 MainWidget::~MainWidget(){
@@ -35,54 +40,22 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e){
 }
 
 void MainWidget::keyPressEvent(QKeyEvent *e){
-    //LOG << e->text();
-    switch (e->key()) {
-    case Qt::Key_W:     m_Camera.moveFoward(); break;
-    case Qt::Key_S:     m_Camera.moveBackward(); break;
-    case Qt::Key_A:     m_Camera.strafeLeft(); break;
-    case Qt::Key_D:     m_Camera.strafeRight(); break;
-    case Qt::Key_0:     m_Camera.position = {0,1,10}; m_Camera.viewDirection = {0,0,-1}; break;
-    default:;
-    }
+    m_Keys[e->key()] = 1;
 }
 
 void MainWidget::keyReleaseEvent(QKeyEvent *e){
-    //LOG << e->text();
+    m_Keys[e->key()] = 0;
 }
 
 void MainWidget::timerEvent(QTimerEvent *e){
 
 }
 
-double d_normal() {
-    const double pi = 3.14159265359;
-    const double nums = 1;
-    double u = 0, v = 0, x = 0;
-
-    srand(rand() + (int) time(NULL));
-
-    for(unsigned int i = 0; i < nums; i++){
-        u = rand() / (((double)RAND_MAX) + 1.0);
-        v = rand() / (((double)RAND_MAX) + 1.0);
-        x = sqrt(-2*log(u)) * cos(2 * pi * v);
-
-        if (std::isfinite(x)){
-            //LOG << x <<" ";
-        }
-    }
-    if (x < 4 && x > -4){
-        return x/4; // normalize
-    }
-    else{
-        return d_normal();
-    }
-}
-
 void MainWidget::initializeGL(){
     initializeOpenGLFunctions();
     LOG << (const char*)glGetString(GL_VERSION);
 
-    glClearColor(0, 0, 0, 1);
+    glClearColor(0, 0, 0.1f, 1);
     initShaders();
 
     //Light settings
@@ -108,12 +81,14 @@ void MainWidget::initializeGL(){
         new Mesh(":/models/room.obj"),
         new Mesh(":/models/chair.obj"),
         new Mesh(":/models/table.obj"),
+        new Mesh(":/models/stall.obj"),
     };
     Texture *textures[] =
     {
         new Texture(Image(":textures/room.png").mirrored()),
         new Texture(Image(":textures/chair.png").mirrored()),
         new Texture(Image(":textures/table.png").mirrored()),
+        new Texture(Image(":textures/stallTexture.png").mirrored()),
     };
 
     if(QApplication::arguments().size() > 1){
@@ -121,7 +96,7 @@ void MainWidget::initializeGL(){
         if(!file.open(QIODevice::ReadOnly)){
             return;
         }
-        auto rooms = QString(file.readAll().data()).split("\n");
+        auto rooms = QString(file.readAll().data()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
         int nrooms = rooms[0].toInt();
         LOG << nrooms;
         rooms.removeFirst();
@@ -150,7 +125,7 @@ void MainWidget::initializeGL(){
                     entities.back()->m_Texture->setMinificationFilter(Texture::Nearest);
                     entities.back()->m_Texture->setMagnificationFilter(Texture::Linear);
                     entities.back()->m_Texture->setWrapMode(Texture::Repeat);
-                    if(k == 1)
+                    if(k >= 1)
                         entities.back()->transform.scale(0.5f);
 
                     unsigned xposition = rand()%6;
@@ -176,6 +151,12 @@ void MainWidget::initializeGL(){
 
             x += 30;
         }
+
+        //Plane
+        entities.push_back(new Entity(new Mesh({{-1,1,0},{-1,0,0},{1,-1,0},{1,1,0}},{0,1,2,2,3,0},{{0,1,0}},{0,0,0,0,0,0}), &shaderprogram));
+        entities.back()->transform.rotate(-90,{1,0,0});
+        entities.back()->transform.scale(1000);
+        entities.back()->position = {0,-0.5f,0};
     }
 
 }
@@ -224,9 +205,12 @@ void MainWidget::paintGL(){
 
     if(m_Rendercount.timetoUpdate){
         m_Rendercount.timetoUpdate = false;
-        //entities[2]->transform.rotate(1,{0,1,0});
-        //entity->transform.translate({0,0,0.01f});
 
+        if (m_Keys[Qt::Key_W]) {m_Camera.moveFoward();}
+        if (m_Keys[Qt::Key_S]) {m_Camera.moveBackward();}
+        if (m_Keys[Qt::Key_A]) {m_Camera.strafeLeft();}
+        if (m_Keys[Qt::Key_D]) {m_Camera.strafeRight();}
+        if (m_Keys[Qt::Key_0]) {m_Camera.position = {0,1,10}; m_Camera.viewDirection = {0,0,-1};}
     }
 
     if(m_Rendercount.timetoTick){

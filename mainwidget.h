@@ -14,6 +14,8 @@
 #include "utils/time.h"
 #include "render/camera.h"
 
+#include <unordered_map>
+
 class MainWidget : public QOpenGLWidget, protected OpenGLFunc{
     Q_OBJECT
 
@@ -23,6 +25,7 @@ class MainWidget : public QOpenGLWidget, protected OpenGLFunc{
 	SimpleRenderer m_Renderer;
 	
     vec2 m_MousePressPosition;
+    std::unordered_map<int, unsigned char> m_Keys;
 	
     ShaderProgram shaderprogram;
     
