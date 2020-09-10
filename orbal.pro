@@ -46,4 +46,4 @@ MOC_DIR=generated_files #Intermediate moc files directory
 DISTFILES +=
 
 #CONFIG += c++11
-#LIBS   += -lopengl32
+LIBS   += -lopengl32
