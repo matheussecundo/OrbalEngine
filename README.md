@@ -1,5 +1,7 @@
 # OrbalEngine
 
+![image info](./preview.PNG)
+
 Instalar pacote qt5-default para executar o arquivo binário ou compilar:
 #sudo apt install qt5-default
 
